@@ -1,7 +1,6 @@
 package buckpal.hexagonal.account.adapter.out.persistence;
 
 
-import buckpal.hexagonal.account.adapter.out.persistence.AccountJpaEntity;
 import buckpal.hexagonal.account.domain.Account;
 import lombok.NoArgsConstructor;
 

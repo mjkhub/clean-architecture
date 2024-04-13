@@ -35,8 +35,7 @@ class AccountController {
 
         SendMoneyRequest sendMoneyRequest = accountMapper.mapToSendMoneyRequest(clientRequest);
         AccountState accountState = sendMoneyUseCase.sendMoney(sendMoneyRequest);
-        ClientResponse clientResponse = accountMapper.mapToClientResponse(accountState);
-        return clientResponse;
+        return accountMapper.mapToClientResponse(accountState);
     }
 
 
