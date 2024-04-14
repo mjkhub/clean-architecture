@@ -7,6 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class AccountState {
+
     private String name;
     private int money;
+
 }

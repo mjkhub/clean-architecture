@@ -8,6 +8,7 @@ import buckpal.hexagonal.account.domain.SendMoneyRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 @Service // use case
 @RequiredArgsConstructor
@@ -25,10 +26,11 @@ class SendMoneyService implements SendMoneyUseCase { // Adapter에서 직접적�
         Account sAccount = accountCrudPort.findAccount(source);
         Account tAccount = accountCrudPort.findAccount(target);
 
-        AccountState accountState = sAccount.transferMoney(tAccount, money); //비즈니스로직
+        AccountState accountState = sAccount.transferMoney(tAccount, money);
         accountCrudPort.updateAccount(accountState.getName(), accountState.getMoney()); //db 반영
 
         return accountState;
     }
+
 
 }

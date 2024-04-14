@@ -8,8 +8,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 class AccountController {
@@ -30,14 +34,13 @@ class AccountController {
 //    }
 
 
-    @PostMapping ("/money") // 계좌 이체 UseCase
+    @PostMapping ("/money") // 계좌 이체 Use Case
     public ClientResponse useCase(@RequestBody ClientRequest clientRequest){
-
         SendMoneyRequest sendMoneyRequest = accountMapper.mapToSendMoneyRequest(clientRequest);
         AccountState accountState = sendMoneyUseCase.sendMoney(sendMoneyRequest);
+
         return accountMapper.mapToClientResponse(accountState);
     }
-
 
 
     @NoArgsConstructor
@@ -50,7 +53,6 @@ class AccountController {
         private int money;
     }
 
-    @NoArgsConstructor
     @AllArgsConstructor
     @Getter
     static class ClientResponse{
