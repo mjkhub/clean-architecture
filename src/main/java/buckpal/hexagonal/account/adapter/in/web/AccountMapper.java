@@ -1,5 +1,6 @@
 package buckpal.hexagonal.account.adapter.in.web;
 
+import buckpal.hexagonal.account.domain.AccountCreateRequest;
 import buckpal.hexagonal.account.domain.AccountState;
 import buckpal.hexagonal.account.domain.SendMoneyRequest;
 import lombok.NoArgsConstructor;
@@ -15,5 +16,6 @@ class AccountMapper { //Client 의 request 스펙을 서비스 인터페이스 �
     public AccountController.ClientResponse mapToClientResponse(AccountState accountState){
         return new AccountController.ClientResponse(accountState.getName(), accountState.getMoney(),true);
     }
+
 
 }

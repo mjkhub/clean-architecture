@@ -7,6 +7,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -29,18 +30,18 @@ class AccountJpaRepository {
         em.flush();
     }
 
-
-
-
-
+    public AccountJpaEntity save(AccountJpaEntity accountJpaEntity){
+        em.persist(accountJpaEntity);
+        return accountJpaEntity;
+    }
 
 
 
     @EventListener(ApplicationReadyEvent.class)
     @Transactional
     public void initAccount(){
-        AccountJpaEntity jay = new AccountJpaEntity("jay", "1234",10000);
-        AccountJpaEntity park = new AccountJpaEntity("park","1234" ,20000);
+        AccountJpaEntity jay = new AccountJpaEntity("jay", "1234",10000, LocalDate.now());
+        AccountJpaEntity park = new AccountJpaEntity("park","1234" ,20000,LocalDate.now());
         em.persist(jay);
         em.persist(park);
         em.flush();

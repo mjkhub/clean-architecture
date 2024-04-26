@@ -1,19 +1,32 @@
 package buckpal.hexagonal.account.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Account {
 
     private String name;
     private String password;
     private int money;
+    private LocalDate signUpDate;
 
-    public Account(String name, String password, int money) {
-        this.name = name;
-        this.password = password;
-        this.money = money;
+    public static Account createAccount(String name, String password, int money){
+        Account account = new Account();
+        account.name = name;
+        account.password = password;
+        account.money = money;
+        account.signUpDate = LocalDate.now();
+        return account;
     }
+
+    //이게 객체를 분리하는게 진짜 에바임.
 
     public AccountState transferMoney(Account targetAccount, int money){
         if(isSufficientMoney(money)){
@@ -23,11 +36,13 @@ public class Account {
         }else{
             throw new IllegalArgumentException("Wrong input");
         }
-
     }
 
-    public boolean isPasswordCorrect(String name, String password){
-        return this.name.equals(name) && this.password.equals(password);
+    public boolean isNameCorrect(String name){
+        return this.name.equals(name);
+    }
+    public boolean isPasswordCorrect(String password){
+        return this.password.equals(password);
     }
 
     private void addMoney(int money){

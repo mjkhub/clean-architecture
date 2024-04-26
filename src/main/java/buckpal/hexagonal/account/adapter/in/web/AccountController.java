@@ -34,6 +34,7 @@ class AccountController {
 //    }
 
 
+
     @PostMapping ("/money") // 계좌 이체 Use Case
     public ClientResponse useCase(@RequestBody ClientRequest clientRequest){
         SendMoneyRequest sendMoneyRequest = accountMapper.mapToSendMoneyRequest(clientRequest);
@@ -41,7 +42,6 @@ class AccountController {
 
         return accountMapper.mapToClientResponse(accountState);
     }
-
 
     @NoArgsConstructor
     @AllArgsConstructor

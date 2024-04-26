@@ -13,8 +13,8 @@ class AccountTest {
     @DisplayName("정상 이체 ")
     void transferMoney() {
         //given
-        Account account1 = new Account("jay", "1234", 10000);
-        Account account2 = new Account("park", "1234", 20000);
+        Account account1 = Account.createAccount("jay", "1234", 10000);
+        Account account2 = Account.createAccount("park", "1234", 20000);
 
         //when
         int money = 8000;
@@ -31,8 +31,8 @@ class AccountTest {
         //given
         int ogMoney1 = 10000;
         int ogMoney2 = 20000;
-        Account account1 = new Account("jay", "1234", ogMoney1);
-        Account account2 = new Account("park", "1234",ogMoney2);
+        Account account1 = Account.createAccount("jay", "1234", ogMoney1);
+        Account account2 = Account.createAccount("park", "1234",ogMoney2);
 
         //when
         int money = 11000;

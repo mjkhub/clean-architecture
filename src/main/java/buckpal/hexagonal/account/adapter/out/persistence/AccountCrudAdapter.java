@@ -22,4 +22,11 @@ class AccountCrudAdapter implements AccountCrudPort {
     public void updateAccount(String name, int money) {
         accountJpaRepository.update(name,money);
     }
+
+    @Override
+    public Account saveAccount(Account account) {
+        AccountJpaEntity accountJpaEntity = accountMapper.mapToJpaEntity(account);
+
+        return accountMapper.mapToDomainEntity(accountJpaRepository.save(accountJpaEntity));
+    }
 }
