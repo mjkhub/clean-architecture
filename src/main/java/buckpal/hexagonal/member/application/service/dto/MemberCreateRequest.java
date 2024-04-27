@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class MemberCreateRequest {
+public class MemberCreateRequest { //create Member 스펙에 의존
 
     private String name;
     private String loginId;

@@ -1,17 +1,16 @@
-package buckpal.hexagonal.member.adapter.in.web.crud;
+package buckpal.hexagonal.member.domain.dto;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @Getter
-@NoArgsConstructor
-class MemberCreateRequest {
+@AllArgsConstructor
+public class CreateMember {
 
     private String name;
     private String loginId;
     private String password;
     private String transferPassword;
+
 }

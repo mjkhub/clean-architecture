@@ -7,6 +7,10 @@ import java.util.Optional;
 
 public interface MemberCrudPort {
 
+    Member save(Member member);
 
-    Optional<Member> findByLoginId(String LoginId);
+    Optional<Member> findById(Long id);
+
+    Optional<Member> findByLoginId(String loginId);
+
 }

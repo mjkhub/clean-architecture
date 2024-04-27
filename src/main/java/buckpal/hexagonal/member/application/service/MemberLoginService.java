@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 class MemberLoginService implements MemberLoginUseCase {
 
-    private MemberCrudPort memberCrudPort;
+    private final MemberCrudPort memberCrudPort;
 
     @Override
     public Member login(MemberLoginRequest memberLoginRequest) {
