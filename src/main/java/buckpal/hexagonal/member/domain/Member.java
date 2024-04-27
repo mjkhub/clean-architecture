@@ -1,7 +1,7 @@
 package buckpal.hexagonal.member.domain;
 
 import buckpal.hexagonal.account.domain.Account;
-import buckpal.hexagonal.member.domain.dto.CreateMember;
+import buckpal.hexagonal.member.domain.dto.MemberCreateRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -38,12 +38,12 @@ public class Member {
     private List<Account> accounts = new ArrayList<>();
 
 
-    public static Member createMember(CreateMember createMember){
+    public static Member createMember(MemberCreateRequest memberCreateRequest){
         Member m = new Member();
-        m.name = createMember.getName();
-        m.loginId = createMember.getLoginId();
-        m.password = createMember.getPassword();
-        m.transferPassword = createMember.getTransferPassword();
+        m.name = memberCreateRequest.getName();
+        m.loginId = memberCreateRequest.getLoginId();
+        m.password = memberCreateRequest.getPassword();
+        m.transferPassword = memberCreateRequest.getTransferPassword();
         m.signUpDate = LocalDate.now();
         return m;
     }

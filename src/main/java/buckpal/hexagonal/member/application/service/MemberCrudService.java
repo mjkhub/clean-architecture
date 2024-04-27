@@ -2,9 +2,8 @@ package buckpal.hexagonal.member.application.service;
 
 import buckpal.hexagonal.member.application.port.in.MemberCrudUseCase;
 import buckpal.hexagonal.member.application.port.out.MemberCrudPort;
-import buckpal.hexagonal.member.application.service.dto.MemberCreateRequest;
 import buckpal.hexagonal.member.domain.Member;
-import buckpal.hexagonal.member.domain.dto.CreateMember;
+import buckpal.hexagonal.member.domain.dto.MemberCreateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,9 +18,9 @@ class MemberCrudService implements MemberCrudUseCase {
 
     @Transactional
     @Override
-    public Member createMember(MemberCreateRequest request) {
-        CreateMember createMember = mapToDomainCreateRequest(request);
-        Member member = Member.createMember(createMember);
+    public Member createMember(MemberCreateRequest memberCreateRequest) {
+
+        Member member = Member.createMember(memberCreateRequest);
         log.info("member = {}", member);
         return memberCrudPort.save(member);
     }
@@ -32,12 +31,6 @@ class MemberCrudService implements MemberCrudUseCase {
         return memberCrudPort.findById(id).orElseThrow(); //없으면 예외를 터트려
     }
 
-
-
-    private CreateMember mapToDomainCreateRequest(MemberCreateRequest request) {
-
-        return new CreateMember(request.getName(), request.getLoginId(), request.getPassword(), request.getTransferPassword());
-    }
 
 
 }

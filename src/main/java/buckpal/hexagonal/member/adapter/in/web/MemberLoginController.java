@@ -2,9 +2,7 @@ package buckpal.hexagonal.member.adapter.in.web;
 
 
 import buckpal.hexagonal.account.domain.Account;
-import buckpal.hexagonal.member.application.port.in.MemberCrudUseCase;
 import buckpal.hexagonal.member.application.port.in.MemberLoginUseCase;
-import buckpal.hexagonal.member.application.service.dto.MemberCreateRequest;
 import buckpal.hexagonal.member.application.service.dto.MemberLoginRequest;
 import buckpal.hexagonal.member.domain.Member;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,7 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

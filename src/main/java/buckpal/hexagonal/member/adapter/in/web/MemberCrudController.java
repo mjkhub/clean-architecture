@@ -2,8 +2,8 @@ package buckpal.hexagonal.member.adapter.in.web;
 
 
 import buckpal.hexagonal.member.application.port.in.MemberCrudUseCase;
-import buckpal.hexagonal.member.application.service.dto.MemberCreateRequest;
 import buckpal.hexagonal.member.domain.Member;
+import buckpal.hexagonal.member.domain.dto.MemberCreateRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

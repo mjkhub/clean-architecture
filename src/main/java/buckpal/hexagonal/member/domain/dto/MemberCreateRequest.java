@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class CreateMember {
+public class MemberCreateRequest {
 
     private String name;
     private String loginId;
