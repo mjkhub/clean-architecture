@@ -1,4 +1,4 @@
-package buckpal.hexagonal.account.domain;
+package buckpal.hexagonal.account.domain.dto;
 
 
 import lombok.AllArgsConstructor;

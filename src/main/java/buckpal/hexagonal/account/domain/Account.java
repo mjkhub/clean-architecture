@@ -1,28 +1,45 @@
 package buckpal.hexagonal.account.domain;
 
+import buckpal.hexagonal.account.domain.dto.AccountState;
+import buckpal.hexagonal.member.domain.Member;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 
+@Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Account {
 
-    private String name;
-    private String password;
+
+    @Id @GeneratedValue
+    @Column(name="account_id")
+    private Long id;
+
+    @Column(unique = true)
+    private String number; // 계좌 번호
+    private String transferPassword; // 송금시 입력할 비밀 번호
     private int money;
     private LocalDate signUpDate;
 
-    public static Account createAccount(String name, String password, int money){
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="member_id")
+    private Member member;
+
+    public static Account createAccount(String accountNumber, Member member, int money){
         Account account = new Account();
-        account.name = name;
-        account.password = password;
+        account.number = accountNumber;
+        account.transferPassword = member.getTransferPassword();
         account.money = money;
         account.signUpDate = LocalDate.now();
+
+        account.member = member;
+        member.addAccount(account);
         return account;
     }
 
@@ -32,17 +49,17 @@ public class Account {
         if(isSufficientMoney(money)){
             targetAccount.addMoney(money);
             this.subMoney(money);
-            return new AccountState(this.name, this.money);
+            return new AccountState(this.number, this.money);
         }else{
             throw new IllegalArgumentException("Wrong input");
         }
     }
 
     public boolean isNameCorrect(String name){
-        return this.name.equals(name);
+        return this.number.equals(name);
     }
     public boolean isPasswordCorrect(String password){
-        return this.password.equals(password);
+        return this.transferPassword.equals(password);
     }
 
     private void addMoney(int money){
@@ -57,4 +74,7 @@ public class Account {
     }
 
 
+    public void updateMoney(int money) {
+        //로직은 좀 생각해 봐야 할듯
+    }
 }

@@ -1,5 +1,6 @@
 package buckpal.hexagonal.account.adapter.out.persistence;
 
+import buckpal.hexagonal.account.domain.Account;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -17,35 +18,35 @@ class AccountJpaRepository {
 
     private final EntityManager em;
 
-    public AccountJpaEntity findByName(String accountName){
-        List<AccountJpaEntity> resultList = em.createQuery("select a from AccountJpaEntity a where a.name = :name", AccountJpaEntity.class)
+    public Account findByName(String accountName){
+        List<Account> resultList = em.createQuery("select a from Account a where a.number = :name", Account.class)
                 .setParameter("name", accountName)
                 .getResultList();
         return resultList.get(0);
     }
 
     public void update(String name, int money){
-        AccountJpaEntity accountJpaEntity = this.findByName(name);
+        Account accountJpaEntity = this.findByName(name);
         accountJpaEntity.updateMoney(money);
         em.flush();
     }
 
-    public AccountJpaEntity save(AccountJpaEntity accountJpaEntity){
-        em.persist(accountJpaEntity);
-        return accountJpaEntity;
+    public Account save(Account account){
+        em.persist(account);
+        return account;
     }
 
 
 
-    @EventListener(ApplicationReadyEvent.class)
-    @Transactional
-    public void initAccount(){
-        AccountJpaEntity jay = new AccountJpaEntity("jay", "1234",10000, LocalDate.now());
-        AccountJpaEntity park = new AccountJpaEntity("park","1234" ,20000,LocalDate.now());
-        em.persist(jay);
-        em.persist(park);
-        em.flush();
-        em.clear();
-    }
+//    @EventListener(ApplicationReadyEvent.class)
+//    @Transactional
+//    public void initAccount(){
+//        AccountJpaEntity jay = new AccountJpaEntity("jay", "1234",10000, LocalDate.now());
+//        AccountJpaEntity park = new AccountJpaEntity("park","1234" ,20000,LocalDate.now());
+//        em.persist(jay);
+//        em.persist(park);
+//        em.flush();
+//        em.clear();
+//    }
 
 }

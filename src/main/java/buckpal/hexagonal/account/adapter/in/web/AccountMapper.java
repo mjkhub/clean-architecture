@@ -1,8 +1,7 @@
 package buckpal.hexagonal.account.adapter.in.web;
 
-import buckpal.hexagonal.account.domain.AccountCreateRequest;
-import buckpal.hexagonal.account.domain.AccountState;
-import buckpal.hexagonal.account.domain.SendMoneyRequest;
+import buckpal.hexagonal.account.domain.dto.AccountState;
+import buckpal.hexagonal.account.domain.dto.SendMoneyRequest;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor

@@ -1,11 +1,10 @@
 package buckpal.hexagonal.account.application.port.in;
 
 import buckpal.hexagonal.account.domain.Account;
-import buckpal.hexagonal.account.domain.AccountCreateRequest;
+import buckpal.hexagonal.member.domain.Member;
 
 public interface AccountCrudUseCase {
 
-    Account createAccount(AccountCreateRequest accountCreateRequest);
-
+    Account createAccount(Member member, int money);
 
 }

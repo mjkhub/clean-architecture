@@ -10,12 +10,11 @@ import org.springframework.stereotype.Component;
 class AccountCrudAdapter implements AccountCrudPort {
 
     private final AccountJpaRepository accountJpaRepository;
-    private final AccountMapper accountMapper = new AccountMapper();
 
     @Override
     public Account findAccount(String name) {
-        AccountJpaEntity accountJpaEntity = accountJpaRepository.findByName(name);
-        return accountMapper.mapToDomainEntity(accountJpaEntity);
+
+        return accountJpaRepository.findByName(name);
     }
 
     @Override
@@ -25,8 +24,7 @@ class AccountCrudAdapter implements AccountCrudPort {
 
     @Override
     public Account saveAccount(Account account) {
-        AccountJpaEntity accountJpaEntity = accountMapper.mapToJpaEntity(account);
 
-        return accountMapper.mapToDomainEntity(accountJpaRepository.save(accountJpaEntity));
+        return accountJpaRepository.save(account);
     }
 }

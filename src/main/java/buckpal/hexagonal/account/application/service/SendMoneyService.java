@@ -3,12 +3,11 @@ package buckpal.hexagonal.account.application.service;
 import buckpal.hexagonal.account.application.port.in.SendMoneyUseCase;
 import buckpal.hexagonal.account.application.port.out.AccountCrudPort;
 import buckpal.hexagonal.account.domain.Account;
-import buckpal.hexagonal.account.domain.AccountState;
-import buckpal.hexagonal.account.domain.SendMoneyRequest;
+import buckpal.hexagonal.account.domain.dto.AccountState;
+import buckpal.hexagonal.account.domain.dto.SendMoneyRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 @Service // use case
 @RequiredArgsConstructor
