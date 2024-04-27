@@ -1,2 +1,65 @@
-package buckpal.hexagonal.member.domain;public class Member {
+package buckpal.hexagonal.member.domain;
+
+import buckpal.hexagonal.account.domain.Account;
+import buckpal.hexagonal.member.application.service.dto.MemberCreateRequest;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+
+
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+public class Member {
+
+    @Id @GeneratedValue
+    @Column(name="member_id")
+    private Long id;
+
+    private String name;
+    private String loginId;
+    private String password;
+    private String transferPassword;
+
+    private AtomicInteger totalMoney = new AtomicInteger();
+
+    @OneToMany(mappedBy = "member")
+    private List<Account> accounts = new ArrayList<>();
+
+
+    public static Member createMember(MemberCreateRequest memberCreateRequest){
+        Member m = new Member();
+        m.name = memberCreateRequest.getName();
+        m.loginId = memberCreateRequest.getLoginId();
+        m.password = memberCreateRequest.getPassword();
+        m.transferPassword = memberCreateRequest.getTransferPassword();
+        return m;
+    }
+
+    public void addAccount(Account account){
+        this.accounts.add(account);
+        totalMoney.addAndGet(account.getMoney());
+    }
+
+    @Override
+    public String
+    toString() {
+        return "Member{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", loginId='" + loginId + '\'' +
+                ", password='" + password + '\'' +
+                ", transferPassword='" + transferPassword + '\'' +
+                ", totalMoney=" + totalMoney +
+                ", accounts=" + accounts +
+                '}';
+    }
 }

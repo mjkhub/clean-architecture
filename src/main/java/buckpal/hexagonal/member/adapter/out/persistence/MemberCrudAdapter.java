@@ -1,4 +1,9 @@
 package buckpal.hexagonal.member.adapter.out.persistence;
 
-public class UserCrudAdapter {
+import buckpal.hexagonal.member.application.port.out.MemberCrudPort;
+
+public class MemberCrudAdapter{
+
+
+
 }
