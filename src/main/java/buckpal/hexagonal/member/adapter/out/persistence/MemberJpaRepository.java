@@ -20,6 +20,11 @@ class MemberJpaRepository {
         return member;
     }
 
+    public void updateTotalMoney(Long id, int totalMoney){
+        Member member = em.find(Member.class, id);
+        member.updateTotalMoney(totalMoney);
+    }
+
     public Optional<Member> findById(Long id){
 
         return Optional.ofNullable(em.find(Member.class, id));
@@ -27,7 +32,8 @@ class MemberJpaRepository {
 
     public Optional<Member> findByLoginId(String loginId){
 
-        List<Member> member = em.createQuery("select m from Member m where m.loginId =: loginId", Member.class)
+        List<Member> member = em.createQuery("select m from Member m join fetch m.accounts a " +
+                        "where m.loginId =: loginId", Member.class)
                 .setParameter("loginId", loginId)
                 .getResultList();
 

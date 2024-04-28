@@ -46,4 +46,10 @@ public class MemberCrudAdapter implements MemberCrudPort{
 
         return member;
     }
+
+    @Override
+    public void updateTotalMoney(Long id, int money) {
+
+
+    }
 }

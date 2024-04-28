@@ -14,12 +14,12 @@ class AccountCrudAdapter implements AccountCrudPort {
     @Override
     public Account findByAccountName(String name) {
 
-        return accountJpaRepository.findByName(name);
+        return accountJpaRepository.findByNumber(name);
     }
 
     @Override
-    public void updateAccount(String name, int money) {
-        accountJpaRepository.update(name,money);
+    public void updateAccountMoney(Long id, int money) {
+        accountJpaRepository.updateMoney(id, money);
     }
 
     @Override

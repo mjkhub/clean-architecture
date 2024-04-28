@@ -62,6 +62,10 @@ public class Member {
         this.transferPassword = transferPassword;
     }
 
+
+    public void updateTotalMoney(int totalMoney){
+        this.totalMoney.set(totalMoney);
+    }
     @Override
     public String
     toString() {

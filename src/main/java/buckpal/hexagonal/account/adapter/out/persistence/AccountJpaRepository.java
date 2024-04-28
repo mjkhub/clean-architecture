@@ -3,12 +3,8 @@ package buckpal.hexagonal.account.adapter.out.persistence;
 import buckpal.hexagonal.account.domain.Account;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 
 
@@ -18,16 +14,18 @@ class AccountJpaRepository {
 
     private final EntityManager em;
 
-    public Account findByName(String accountName){
-        List<Account> resultList = em.createQuery("select a from Account a where a.number = :name", Account.class)
-                .setParameter("name", accountName)
+    public Account findByNumber(String accountNumber){
+        List<Account> resultList = em.createQuery("select a from Account a " +
+                        "join fetch a.member m " +
+                        "where a.number = :accountNumber ", Account.class)
+                .setParameter("accountNumber", accountNumber)
                 .getResultList();
         return resultList.get(0);
     }
 
-    public void update(String name, int money){
-        Account accountJpaEntity = this.findByName(name);
-        accountJpaEntity.updateMoney(money);
+    public void updateMoney(Long id, int money){
+        Account account = em.find(Account.class, id);
+        account.updateMoney(money);
         em.flush();
     }
 

@@ -66,10 +66,10 @@ public class Account {
         return this.transferPassword.equals(password);
     }
 
-    private void addMoney(int money){
+    public void addMoney(int money){
         this.money +=money;
     }
-    private void subMoney(int money){
+    public void subMoney(int money){
         this.money -=money;
     }
 
