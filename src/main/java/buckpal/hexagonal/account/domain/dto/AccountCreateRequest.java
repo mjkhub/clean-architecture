@@ -9,9 +9,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class AccountCreateRequest {
 
-    private String name;
-    private String password;
+    private String bankName;
     private int money;
-
 
 }

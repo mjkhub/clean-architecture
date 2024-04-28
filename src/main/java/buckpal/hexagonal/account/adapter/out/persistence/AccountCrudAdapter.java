@@ -12,7 +12,7 @@ class AccountCrudAdapter implements AccountCrudPort {
     private final AccountJpaRepository accountJpaRepository;
 
     @Override
-    public Account findAccount(String name) {
+    public Account findByAccountName(String name) {
 
         return accountJpaRepository.findByName(name);
     }

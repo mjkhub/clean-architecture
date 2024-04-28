@@ -22,8 +22,8 @@ class SendMoneyService implements SendMoneyUseCase { // Adapter에서 직접적�
         String target = sendMoneyRequest.getDestination();
         int money = sendMoneyRequest.getMoney();
 
-        Account sAccount = accountCrudPort.findAccount(source);
-        Account tAccount = accountCrudPort.findAccount(target);
+        Account sAccount = accountCrudPort.findByAccountName(source);
+        Account tAccount = accountCrudPort.findByAccountName(target);
 
         AccountState accountState = sAccount.transferMoney(tAccount, money);
         accountCrudPort.updateAccount(accountState.getName(), accountState.getMoney()); //db 반영

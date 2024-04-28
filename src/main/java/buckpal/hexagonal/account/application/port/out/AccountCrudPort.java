@@ -4,7 +4,7 @@ import buckpal.hexagonal.account.domain.Account;
 
 public interface AccountCrudPort {
 
-    Account findAccount(String name);
+    Account findByAccountName(String name);
     void updateAccount(String name, int money);
     Account saveAccount(Account account);
 

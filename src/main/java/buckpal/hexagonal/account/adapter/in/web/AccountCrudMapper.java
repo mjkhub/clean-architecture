@@ -9,11 +9,7 @@ import lombok.NoArgsConstructor;
 public class AccountCrudMapper {
 
 
-    public AccountCreateRequest mapToDomainCreateRequest(AccountCrudController.CreateAccountRequest createAccountRequest){
-        return new AccountCreateRequest(createAccountRequest.getName(), createAccountRequest.getPassword(), createAccountRequest.getMoney());
-    }
-
     public AccountCrudController.CreateAccountResponse mapToCreateResponse(Account account){
-        return new AccountCrudController.CreateAccountResponse(account.getNumber(),account.getMoney(),account.getSignUpDate());
+        return new AccountCrudController.CreateAccountResponse(account.getMember().getName(), account.getNumber(), account.getMoney(), account.getSignUpDate());
     }
 }

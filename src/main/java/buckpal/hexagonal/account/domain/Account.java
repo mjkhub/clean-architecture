@@ -1,5 +1,6 @@
 package buckpal.hexagonal.account.domain;
 
+import buckpal.hexagonal.account.domain.dto.AccountCreateRequest;
 import buckpal.hexagonal.account.domain.dto.AccountState;
 import buckpal.hexagonal.member.domain.Member;
 import jakarta.persistence.*;
@@ -26,25 +27,28 @@ public class Account {
     private int money;
     private LocalDate signUpDate;
 
+    @Enumerated(EnumType.STRING)
+    private BankName bankName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
     private Member member;
 
-    public static Account createAccount(String accountNumber, Member member, int money){
+    //거래내역들
+
+    public static Account createAccount(String accountNumber, Member member, AccountCreateRequest accountCreateRequest){
         Account account = new Account();
         account.number = accountNumber;
         account.transferPassword = member.getTransferPassword();
-        account.money = money;
+        account.money = accountCreateRequest.getMoney();
         account.signUpDate = LocalDate.now();
-
+        account.bankName = BankName.getBankType(accountCreateRequest.getBankName());
         account.member = member;
         member.addAccount(account);
         return account;
     }
 
     //이게 객체를 분리하는게 진짜 에바임.
-
     public AccountState transferMoney(Account targetAccount, int money){
         if(isSufficientMoney(money)){
             targetAccount.addMoney(money);

@@ -3,11 +3,13 @@ package buckpal.hexagonal.account.application.service;
 import buckpal.hexagonal.account.application.port.in.AccountCrudUseCase;
 import buckpal.hexagonal.account.application.port.out.AccountCrudPort;
 import buckpal.hexagonal.account.domain.Account;
+import buckpal.hexagonal.account.domain.dto.AccountCreateRequest;
 import buckpal.hexagonal.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
@@ -19,18 +21,23 @@ class AccountCrudService implements AccountCrudUseCase {
 
     @Transactional
     @Override
-    public Account createAccount(Member member, int money) {
+    public Account createAccount(Member member, AccountCreateRequest accountCreateRequest) {
         // 여기서 예외가 터질 수도 있음 잘 봐야함
         // session 있다면 memberdp
-        Account.createAccount(generateAccountNumber(), member, money);
+        Account account = Account.createAccount(generateAccountNumber(), member, accountCreateRequest);
+
+
+        return accountCrudPort.saveAccount(account);
+    }
+
+    @Override
+    public List<Account> getAccounts(Member member) {
 
         return null;
     }
 
-
-
     private String generateAccountNumber(){
-        return Long.toString(accountNumber.incrementAndGet());
+        return "0000-0000-" + Long.toString(accountNumber.incrementAndGet());
     }
 
 
