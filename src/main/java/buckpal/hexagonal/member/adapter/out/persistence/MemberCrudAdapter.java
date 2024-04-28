@@ -44,7 +44,6 @@ public class MemberCrudAdapter implements MemberCrudPort{
         member.updateTransferPassword(transferPasswordUpdateRequest.getTransferPassword());
 
 
-
         return member;
     }
 }
