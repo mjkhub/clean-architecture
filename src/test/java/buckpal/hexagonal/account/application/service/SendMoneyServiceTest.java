@@ -3,16 +3,14 @@ package buckpal.hexagonal.account.application.service;
 import buckpal.hexagonal.account.application.port.in.SendMoneyUseCase;
 import buckpal.hexagonal.account.application.port.out.AccountCrudPort;
 import buckpal.hexagonal.account.domain.Account;
-import buckpal.hexagonal.account.domain.AccountState;
-import buckpal.hexagonal.account.domain.SendMoneyRequest;
-import org.assertj.core.api.Assertions;
+import buckpal.hexagonal.account.domain.dto.AccountState;
+import buckpal.hexagonal.account.domain.dto.SendMoneyRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class SendMoneyServiceTest {
@@ -31,11 +29,11 @@ class SendMoneyServiceTest {
 
         //when
         AccountState accountState = sendMoneyUseCase.sendMoney(sendMoneyRequest);
-        Account sourceAccount = accountCrudPort.findAccount(sendMoneyRequest.getSource());
+        Account sourceAccount = accountCrudPort.findByAccountName(sendMoneyRequest.getSource());
 
 
         //then
-        assertThat(accountState.getName()).isEqualTo(sourceAccount.getName());
+        assertThat(accountState.getName()).isEqualTo(sourceAccount.getNumber());
         assertThat(accountState.getMoney()).isEqualTo(sourceAccount.getMoney());
         System.out.println("sourceAccount.getMoney() = " + sourceAccount.getMoney());
     }
@@ -49,7 +47,7 @@ class SendMoneyServiceTest {
         //when
         assertThatThrownBy( ()->sendMoneyUseCase.sendMoney(sendMoneyRequest))
                 .isInstanceOf(IllegalStateException.class);
-        Account sourceAccount = accountCrudPort.findAccount(sendMoneyRequest.getSource());
+        Account sourceAccount = accountCrudPort.findByAccountName(sendMoneyRequest.getSource());
 
         //then
         assertThat(sourceAccount.getMoney()).isEqualTo(10000);
