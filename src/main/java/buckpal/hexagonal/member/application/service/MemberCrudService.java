@@ -2,6 +2,8 @@ package buckpal.hexagonal.member.application.service;
 
 import buckpal.hexagonal.member.application.port.in.MemberCrudUseCase;
 import buckpal.hexagonal.member.application.port.out.MemberCrudPort;
+import buckpal.hexagonal.member.application.service.dto.PasswordUpdateRequest;
+import buckpal.hexagonal.member.application.service.dto.TransferPasswordUpdateRequest;
 import buckpal.hexagonal.member.domain.Member;
 import buckpal.hexagonal.member.domain.dto.MemberCreateRequest;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,16 @@ class MemberCrudService implements MemberCrudUseCase {
         return memberCrudPort.findById(id).orElseThrow(); //없으면 예외를 터트려
     }
 
+    @Transactional
+    @Override
+    public Member updatePassword(Long id, PasswordUpdateRequest passwordUpdateRequest) {
 
+        return memberCrudPort.updatePassword(id, passwordUpdateRequest);
+    }
 
+    @Transactional
+    @Override
+    public Member updateTransferPassword(Long id, TransferPasswordUpdateRequest transferPasswordUpdateRequest) {
+        return memberCrudPort.updateTransferPassword(id, transferPasswordUpdateRequest);
+    }
 }

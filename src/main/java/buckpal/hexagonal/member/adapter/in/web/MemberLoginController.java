@@ -1,6 +1,7 @@
 package buckpal.hexagonal.member.adapter.in.web;
 
 
+import buckpal.hexagonal.SessionManager;
 import buckpal.hexagonal.account.domain.Account;
 import buckpal.hexagonal.member.application.port.in.MemberLoginUseCase;
 import buckpal.hexagonal.member.application.service.dto.MemberLoginRequest;
@@ -21,12 +22,13 @@ public class MemberLoginController {
 
     private final MemberLoginUseCase memberLoginUseCase;
 
+    private final SessionManager sessionManager;
+
     @PostMapping("/login")
     public MemberLoginResponse loginMember(@RequestBody MemberLoginRequest memberLoginRequest, HttpServletRequest servletRequest){
 
         Member member = memberLoginUseCase.login(memberLoginRequest);
-        HttpSession session = servletRequest.getSession(); //세션 생성
-        session.setAttribute("memberId", member.getId()); // 로그인 한 member 의 pk를 저장
+        sessionManager.createSessionAndRestore(servletRequest, member.getId()); // 로그인 한 member 의 pk를 저장
                                                                 // 로그 아웃 에서 사용 되기 보다는 다른 곳에서 많이 사용됨
 
         return new MemberLoginResponse(member.getName(), member.getTotalMoney().get(), member.getAccounts()); // Account 객체를 또 dto 로 변환 해야 함

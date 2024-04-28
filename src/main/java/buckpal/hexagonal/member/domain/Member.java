@@ -53,6 +53,15 @@ public class Member {
         totalMoney.addAndGet(account.getMoney());
     }
 
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    public void updateTransferPassword(String transferPassword) {
+        this.transferPassword = transferPassword;
+    }
+
     @Override
     public String
     toString() {
