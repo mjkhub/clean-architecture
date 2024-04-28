@@ -42,9 +42,6 @@ public class MemberCrudAdapter implements MemberCrudPort{
     public Member updateTransferPassword(Long id, TransferPasswordUpdateRequest transferPasswordUpdateRequest) {
         Member member = memberRepository.findById(id).orElseThrow();
         member.updateTransferPassword(transferPasswordUpdateRequest.getTransferPassword());
-
-
-
         return member;
     }
 }
