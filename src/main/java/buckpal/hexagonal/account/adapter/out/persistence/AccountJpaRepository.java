@@ -15,12 +15,11 @@ class AccountJpaRepository {
     private final EntityManager em;
 
     public Account findByNumber(String accountNumber){
-        List<Account> resultList = em.createQuery("select a from Account a " +
+        return em.createQuery("select a from Account a " +
                         "join fetch a.member m " +
                         "where a.number = :accountNumber ", Account.class)
                 .setParameter("accountNumber", accountNumber)
-                .getResultList();
-        return resultList.get(0);
+                .getSingleResult();
     }
 
     public Account save(Account account){
@@ -44,7 +43,11 @@ class AccountJpaRepository {
                 .setParameter("memberId", memberId)
                 .setParameter("accountNumber", accountNumber)
                 .getResultList();
-        return resultList.get(0);
+
+        if(resultList.isEmpty()) //transaction 이 없으면 Account 자체가 조회가 안됨
+            return findByNumber(accountNumber);
+        else
+            return resultList.get(0);
     }
 
 

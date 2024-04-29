@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 
@@ -25,35 +26,25 @@ public class MemberLoginController {
     private final SessionManager sessionManager;
 
     @PostMapping("/login")
-    public MemberLoginResponse loginMember(@RequestBody MemberLoginRequest memberLoginRequest, HttpServletRequest servletRequest){
+    public RedirectView loginMember(@RequestBody MemberLoginRequest memberLoginRequest, HttpServletRequest servletRequest){
 
         Member member = memberLoginUseCase.login(memberLoginRequest);
         sessionManager.createSessionAndRestore(servletRequest, member.getId()); // 로그인 한 member 의 pk를 저장
                                                                 // 로그 아웃 에서 사용 되기 보다는 다른 곳에서 많이 사용됨
-
-        return new MemberLoginResponse(member.getName(), member.getTotalMoney().get(), member.getAccounts()); // Account 객체를 또 dto 로 변환 해야 함
+        return new RedirectView("/member/accounts");
     }
 
     @PostMapping("/logout")
     public String logoutMember(HttpServletRequest servletRequest){
         //세션처리
-        HttpSession session = servletRequest.getSession(false);
-        session.invalidate(); // could occur null pointer exception
+        sessionManager.invalidateSession(servletRequest);
 
-        return "ok";
+        return "logout is done";
     }
 
 
-    @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    static class MemberLoginResponse {
 
-        private String name;
-        private int totalMoney;
-        private List<Account> accounts;
 
-    }
 
 
 

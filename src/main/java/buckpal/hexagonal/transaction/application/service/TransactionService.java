@@ -33,11 +33,11 @@ public class TransactionService implements TransactionUseCase {
         AccountState accountState = sourceAccount.transferMoney(destinationAccount, money);
 
         // 돈을 보낸 입장 -> 송금 transaction 생성
-        Transaction transferTransaction = new Transaction(tr.getSourceAccountNumber(), tr.getDestinationAccountNumber(), tr.getMoney(), TransactionType.TRANSFER, LocalDateTime.now(), sourceAccount, destinationAccount.getMember().getName(), sourceAccount.getMoney() - tr.getMoney());
+        Transaction transferTransaction = new Transaction(tr.getSourceAccountNumber(), tr.getDestinationAccountNumber(), tr.getMoney(), TransactionType.TRANSFER, LocalDateTime.now(), sourceAccount, destinationAccount.getMember().getName(), sourceAccount.getMoney());
         transactionCrudPort.save(transferTransaction);
 
         // 돈을 받은 입장 -> 입금 transaction 생성
-        Transaction depositTransaction = new Transaction(tr.getSourceAccountNumber(), tr.getDestinationAccountNumber(), tr.getMoney(), TransactionType.DEPOSIT, LocalDateTime.now(), destinationAccount, sourceAccount.getMember().getName(), destinationAccount.getMoney() + tr.getMoney());
+        Transaction depositTransaction = new Transaction(tr.getSourceAccountNumber(), tr.getDestinationAccountNumber(), tr.getMoney(), TransactionType.DEPOSIT, LocalDateTime.now(), destinationAccount, sourceAccount.getMember().getName(), destinationAccount.getMoney());
         transactionCrudPort.save(depositTransaction);
 
         return accountState;

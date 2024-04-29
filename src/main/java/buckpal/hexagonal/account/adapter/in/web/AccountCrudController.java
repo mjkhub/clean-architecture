@@ -4,16 +4,21 @@ import buckpal.hexagonal.SessionManager;
 import buckpal.hexagonal.account.application.port.in.AccountCrudUseCase;
 import buckpal.hexagonal.account.domain.Account;
 import buckpal.hexagonal.account.domain.dto.AccountCreateRequest;
+import buckpal.hexagonal.member.adapter.in.web.MemberLoginController;
 import buckpal.hexagonal.member.application.port.in.MemberCrudUseCase;
 import buckpal.hexagonal.member.domain.Member;
+import buckpal.hexagonal.transaction.domain.TransactionType;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Slf4j
@@ -24,6 +29,7 @@ class AccountCrudController {
     private final AccountCrudUseCase accountCrudUseCase;
     private final MemberCrudUseCase memberCrudUseCase;
     private final SessionManager sessionManager;
+    private final AccountMapper accountMapper;
 
     @PostMapping("/member/accounts") // create
     public CreateAccountResponse createAccount(@RequestBody AccountCreateRequest createAccountRequest, HttpServletRequest servletRequest){
@@ -37,28 +43,27 @@ class AccountCrudController {
     }
 
     @GetMapping("/member/accounts")
-    public GetAccountsResponse getAccounts(HttpServletRequest servletRequest){
+    public MemberAccountsResponse getAccounts(HttpServletRequest servletRequest){
 
         Long memberId = sessionManager.getMemberIdFromSession(servletRequest);
 
-        List<Account> accounts = accountCrudUseCase.getAccountsOfMember(memberId);
-        List<AccountDto> accountsDto = accounts.stream()
-                .map(m -> new AccountDto(m.getNumber(), m.getMoney()))
-                .toList();
+        Member member = memberCrudUseCase.findMemberById(memberId);
 
-        return new GetAccountsResponse(accountsDto);
+        List<AccountDto> accountDtoList = member.getAccounts().stream()
+                .map(a -> new AccountDto(a.getNumber(), a.getMoney()))
+                .toList();
+        return new MemberAccountsResponse(member.getName(), member.getTotalMoney().get(), accountDtoList); // Account 객체를 또 dto 로 변환 해야 함
     }
 
     @GetMapping("/member/accounts/{accountNumber}")
-    public CreateAccountResponse getAccount(HttpServletRequest servletRequest, @PathVariable String accountNumber){
+    public AccountDtoWithTransactions getAccount(HttpServletRequest servletRequest, @PathVariable String accountNumber){
 
         // account 와 더불어, 연관된 Transaction 내역 까지 모두 조회하는 API 가 필요함
         Long memberId = sessionManager.getMemberIdFromSession(servletRequest);
         Account accountWithTransactions = accountCrudUseCase.getAccountWithTransactions(memberId, accountNumber);
 
-        // 이제 API 의 스펙에 맞게
-        // 날짜 순으로 정렬, 날짜 순으로 구분
-        return null;
+        return accountMapper.mapToDto(accountWithTransactions);
+        // fetch join으로 쿼리 한방에 해결 완료
     }
 
 
@@ -82,11 +87,33 @@ class AccountCrudController {
 
     @Getter
     @AllArgsConstructor
-    static class AccountDto{ //자세히 보기 전 화면
-        private String number;
+    @NoArgsConstructor
+    static class MemberAccountsResponse {
+
+        private String name;
+        private int totalMoney;
+        private List<AccountDto> accounts;
+
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    static class AccountDto{
+        private String accountNumber;
         private int money;
     }
 
+    @Getter
+    @AllArgsConstructor
+    static class AccountDtoWithTransactions{
+
+        private String number;
+        private int money;
+
+        List<TransactionByDate> transactionByDates;
+
+    }
 
 
 }
