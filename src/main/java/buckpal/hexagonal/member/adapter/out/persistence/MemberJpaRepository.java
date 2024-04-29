@@ -20,11 +20,6 @@ class MemberJpaRepository {
         return member;
     }
 
-    public void updateTotalMoney(Long id, int totalMoney){
-        Member member = em.find(Member.class, id);
-        member.updateTotalMoney(totalMoney);
-    }
-
     public Optional<Member> findById(Long id){
 
         return Optional.ofNullable(em.find(Member.class, id));

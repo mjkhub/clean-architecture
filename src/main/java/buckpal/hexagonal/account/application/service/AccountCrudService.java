@@ -22,21 +22,23 @@ class AccountCrudService implements AccountCrudUseCase {
     @Transactional
     @Override
     public Account createAccount(Member member, AccountCreateRequest accountCreateRequest) {
-        // 여기서 예외가 터질 수도 있음 잘 봐야함
-        // session 있다면 memberdp
+
         Account account = Account.createAccount(generateAccountNumber(), member, accountCreateRequest);
-
-
         return accountCrudPort.saveAccount(account);
     }
 
     @Override
-    public List<Account> getAccounts(Member member) {
-
-        return null;
+    public List<Account> getAccountsOfMember(Long memberId) {
+        return accountCrudPort.getAccounts(memberId);
     }
 
-    private String generateAccountNumber(){
+    @Override
+    public Account getAccountWithTransactions(Long memberId, String accountNumber) {
+
+        return accountCrudPort.findByAccountWithTransactions(memberId, accountNumber);
+    }
+
+    private String generateAccountNumber(){ // 계좌 번호는 유니크 -> An error could occur
         return "0000-0000-" + Long.toString(accountNumber.incrementAndGet());
     }
 

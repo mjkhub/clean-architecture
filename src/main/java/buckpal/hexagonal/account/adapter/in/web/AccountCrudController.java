@@ -1,21 +1,17 @@
 package buckpal.hexagonal.account.adapter.in.web;
 
+import buckpal.hexagonal.SessionManager;
 import buckpal.hexagonal.account.application.port.in.AccountCrudUseCase;
 import buckpal.hexagonal.account.domain.Account;
 import buckpal.hexagonal.account.domain.dto.AccountCreateRequest;
 import buckpal.hexagonal.member.application.port.in.MemberCrudUseCase;
 import buckpal.hexagonal.member.domain.Member;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,12 +23,12 @@ class AccountCrudController {
 
     private final AccountCrudUseCase accountCrudUseCase;
     private final MemberCrudUseCase memberCrudUseCase;
-    private final AccountCrudMapper accountCrudMapper = new AccountCrudMapper();
+    private final SessionManager sessionManager;
 
     @PostMapping("/member/accounts") // create
     public CreateAccountResponse createAccount(@RequestBody AccountCreateRequest createAccountRequest, HttpServletRequest servletRequest){
 
-        Long memberId = getMemberIdFromSession(servletRequest);
+        Long memberId = sessionManager.getMemberIdFromSession(servletRequest);
         Member member = memberCrudUseCase.findMemberById(memberId);
 
         Account account = accountCrudUseCase.createAccount(member, createAccountRequest);
@@ -43,27 +39,26 @@ class AccountCrudController {
     @GetMapping("/member/accounts")
     public GetAccountsResponse getAccounts(HttpServletRequest servletRequest){
 
-        Long memberId = getMemberIdFromSession(servletRequest);
-        Member member = memberCrudUseCase.findMemberById(memberId);
-        List<Account> accounts = accountCrudUseCase.getAccounts(member);
-        List<AccountDto> accountsDto= accounts.stream()
+        Long memberId = sessionManager.getMemberIdFromSession(servletRequest);
+
+        List<Account> accounts = accountCrudUseCase.getAccountsOfMember(memberId);
+        List<AccountDto> accountsDto = accounts.stream()
                 .map(m -> new AccountDto(m.getNumber(), m.getMoney()))
                 .toList();
 
         return new GetAccountsResponse(accountsDto);
     }
 
-    @GetMapping("/member/accounts/{accountNumber}") // create
-    public CreateAccountResponse getAccount(HttpServletRequest servletRequest){
-        // 거래 기록들을 모두 가져오는 API 가 필요함
+    @GetMapping("/member/accounts/{accountNumber}")
+    public CreateAccountResponse getAccount(HttpServletRequest servletRequest, @PathVariable String accountNumber){
 
+        // account 와 더불어, 연관된 Transaction 내역 까지 모두 조회하는 API 가 필요함
+        Long memberId = sessionManager.getMemberIdFromSession(servletRequest);
+        Account accountWithTransactions = accountCrudUseCase.getAccountWithTransactions(memberId, accountNumber);
+
+        // 이제 API 의 스펙에 맞게
+        // 날짜 순으로 정렬, 날짜 순으로 구분
         return null;
-    }
-
-    private static Long getMemberIdFromSession(HttpServletRequest servletRequest) {
-        HttpSession session = servletRequest.getSession(false);
-        Long memberId = (Long)session.getAttribute("memberId"); //could occur null pointer exception
-        return memberId;
     }
 
 
@@ -88,7 +83,6 @@ class AccountCrudController {
     @Getter
     @AllArgsConstructor
     static class AccountDto{ //자세히 보기 전 화면
-
         private String number;
         private int money;
     }

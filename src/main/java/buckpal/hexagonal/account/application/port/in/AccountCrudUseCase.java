@@ -10,6 +10,7 @@ public interface AccountCrudUseCase {
 
     Account createAccount(Member member, AccountCreateRequest accountCreateRequest);
 
-    List<Account> getAccounts(Member member);
+    List<Account> getAccountsOfMember(Long memberId);
 
+    Account getAccountWithTransactions(Long memberId, String accountNumber);
 }

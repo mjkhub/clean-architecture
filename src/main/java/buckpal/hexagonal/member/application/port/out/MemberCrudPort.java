@@ -19,6 +19,4 @@ public interface MemberCrudPort {
 
     Member updateTransferPassword(Long id, TransferPasswordUpdateRequest transferPasswordUpdateRequest);
 
-    void updateTotalMoney(Long id, int money);
-
 }

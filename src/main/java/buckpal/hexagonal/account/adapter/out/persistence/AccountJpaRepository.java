@@ -23,28 +23,29 @@ class AccountJpaRepository {
         return resultList.get(0);
     }
 
-    public void updateMoney(Long id, int money){
-        Account account = em.find(Account.class, id);
-        account.updateMoney(money);
-        em.flush();
-    }
-
     public Account save(Account account){
         em.persist(account);
         return account;
     }
 
+    public List<Account> findAccountsOfMember(Long memberId){
+        return em.createQuery("select a from Account a " +
+                        "join fetch a.member m " +
+                        "where m.id =: memberId", Account.class)
+                .setParameter("memberId", memberId)
+                .getResultList();
+    }
 
+    public Account findWithTransactions(Long memberId, String accountNumber){
+        List<Account> resultList = em.createQuery("select distinct a from Account a " +
+                        "join a.member m " +
+                        "join fetch a.transactions tr " +
+                        "where a.number =:accountNumber and m.id =: memberId", Account.class)
+                .setParameter("memberId", memberId)
+                .setParameter("accountNumber", accountNumber)
+                .getResultList();
+        return resultList.get(0);
+    }
 
-//    @EventListener(ApplicationReadyEvent.class)
-//    @Transactional
-//    public void initAccount(){
-//        AccountJpaEntity jay = new AccountJpaEntity("jay", "1234",10000, LocalDate.now());
-//        AccountJpaEntity park = new AccountJpaEntity("park","1234" ,20000,LocalDate.now());
-//        em.persist(jay);
-//        em.persist(park);
-//        em.flush();
-//        em.clear();
-//    }
 
 }

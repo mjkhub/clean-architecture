@@ -5,26 +5,34 @@ import buckpal.hexagonal.account.domain.Account;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 class AccountCrudAdapter implements AccountCrudPort {
 
-    private final AccountJpaRepository accountJpaRepository;
+    private final AccountJpaRepository accountRepository;
 
     @Override
-    public Account findByAccountName(String name) {
+    public Account findByAccountNumber(String number) {
 
-        return accountJpaRepository.findByNumber(name);
-    }
-
-    @Override
-    public void updateAccountMoney(Long id, int money) {
-        accountJpaRepository.updateMoney(id, money);
+        return accountRepository.findByNumber(number);
     }
 
     @Override
     public Account saveAccount(Account account) {
 
-        return accountJpaRepository.save(account);
+        return accountRepository.save(account);
+    }
+
+    @Override
+    public List<Account> getAccounts(Long memberId) {
+
+        return accountRepository.findAccountsOfMember(memberId);
+    }
+
+    @Override
+    public Account findByAccountWithTransactions(Long memberId, String number) {
+        return accountRepository.findWithTransactions(memberId, number);
     }
 }

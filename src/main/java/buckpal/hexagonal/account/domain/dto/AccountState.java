@@ -8,7 +8,8 @@ import lombok.Getter;
 @Getter
 public class AccountState {
 
-    private String name;
-    private int money;
+    private String destinationAccountNumber;
+    private int transferMoney;
+    private int moneyAfterTransaction;
 
 }

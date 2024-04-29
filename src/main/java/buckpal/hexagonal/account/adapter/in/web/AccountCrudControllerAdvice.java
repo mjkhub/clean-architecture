@@ -15,7 +15,7 @@ public class AccountCrudControllerAdvice {
 
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ErrorResult illegalExHandle(DataIntegrityViolationException e) {
+    public ErrorResult illegalExHandle(DataIntegrityViolationException e) { //duplicate 계좌번호
         log.error("[exceptionHandle] ex key 중복 에러 발생~", e);
         return new ErrorResult("type", "Duplicate key", 403, e.getMessage(), "instance");
     }

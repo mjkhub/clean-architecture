@@ -63,9 +63,15 @@ public class Member {
     }
 
 
-    public void updateTotalMoney(int totalMoney){
-        this.totalMoney.set(totalMoney);
+    public void addTotalMoney(int money){
+        this.totalMoney.addAndGet(money);
     }
+
+    public void subTotalMoney(int money){
+        this.totalMoney.addAndGet(money * -1);
+    }
+
+
     @Override
     public String
     toString() {

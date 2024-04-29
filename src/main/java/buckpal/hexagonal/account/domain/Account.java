@@ -3,12 +3,15 @@ package buckpal.hexagonal.account.domain;
 import buckpal.hexagonal.account.domain.dto.AccountCreateRequest;
 import buckpal.hexagonal.account.domain.dto.AccountState;
 import buckpal.hexagonal.member.domain.Member;
+import buckpal.hexagonal.transaction.domain.Transaction;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -34,7 +37,8 @@ public class Account {
     @JoinColumn(name="member_id")
     private Member member;
 
-    //거래내역들
+    @OneToMany(mappedBy = "account")
+    private List<Transaction> transactions = new ArrayList<>();
 
     public static Account createAccount(String accountNumber, Member member, AccountCreateRequest accountCreateRequest){
         Account account = new Account();
@@ -49,14 +53,19 @@ public class Account {
     }
 
     //이게 객체를 분리하는게 진짜 에바임.
-    public AccountState transferMoney(Account targetAccount, int money){
-        if(isSufficientMoney(money)){
-            targetAccount.addMoney(money);
-            this.subMoney(money);
-            return new AccountState(this.number, this.money);
-        }else{
-            throw new IllegalArgumentException("Wrong input");
-        }
+    public AccountState transferMoney(Account destinationAccount, int money){
+
+        // 돈을 보낸 account 의 정보 변경
+        // 1. 계좌의 금액  2. 멤버가 가진 돈
+        this.subMoney(money);
+        this.member.subTotalMoney(money);
+
+        // 돈을 받은 account 정보 변경
+        // 1. 계좌의 금액  2. 멤버가 가진 돈
+        destinationAccount.addMoney(money);
+        destinationAccount.getMember().addTotalMoney(money);
+
+        return new AccountState(destinationAccount.getNumber(), money, this.getMoney());
     }
 
     public boolean isNameCorrect(String name){
@@ -66,19 +75,13 @@ public class Account {
         return this.transferPassword.equals(password);
     }
 
-    public void addMoney(int money){
+    private void addMoney(int money){
         this.money +=money;
     }
-    public void subMoney(int money){
+    private void subMoney(int money){
+        if(this.money < money)
+            throw new IllegalArgumentException("Account money is smaller than input money");
         this.money -=money;
     }
 
-    private boolean isSufficientMoney(int money){
-        return this.money >= money;
-    }
-
-
-    public void updateMoney(int money) {
-        //로직은 좀 생각해 봐야 할듯
-    }
 }

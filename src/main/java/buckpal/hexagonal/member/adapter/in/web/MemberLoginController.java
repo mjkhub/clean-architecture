@@ -44,8 +44,6 @@ public class MemberLoginController {
     }
 
 
-    //에러처리 고려
-
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
