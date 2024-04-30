@@ -33,9 +33,9 @@ class AccountCrudService implements AccountCrudUseCase {
     }
 
     @Override
-    public Account getAccountWithTransactions(Long memberId, String accountNumber) {
+    public Account getAccountWithTransactions(Long memberId, String accountNumber, String transactionType) {
 
-        return accountCrudPort.findByAccountWithTransactions(memberId, accountNumber);
+        return accountCrudPort.findByAccountWithTransactions(memberId, accountNumber, transactionType);
     }
 
     private String generateAccountNumber(){ // 계좌 번호는 유니크 -> An error could occur

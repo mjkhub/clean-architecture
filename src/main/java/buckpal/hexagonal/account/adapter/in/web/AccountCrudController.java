@@ -56,11 +56,14 @@ class AccountCrudController {
     }
 
     @GetMapping("/member/accounts/{accountNumber}")
-    public AccountDtoWithTransactions getAccount(HttpServletRequest servletRequest, @PathVariable String accountNumber){
+    public AccountDtoWithTransactions getAccount(HttpServletRequest servletRequest,
+                                                 @PathVariable String accountNumber,
+                                                 @RequestParam(required = false,name="type") String transactionType){
+
 
         // account 와 더불어, 연관된 Transaction 내역 까지 모두 조회하는 API 가 필요함
         Long memberId = sessionManager.getMemberIdFromSession(servletRequest);
-        Account accountWithTransactions = accountCrudUseCase.getAccountWithTransactions(memberId, accountNumber);
+        Account accountWithTransactions = accountCrudUseCase.getAccountWithTransactions(memberId, accountNumber,transactionType);
 
         return accountMapper.mapToDto(accountWithTransactions);
         // fetch join으로 쿼리 한방에 해결 완료

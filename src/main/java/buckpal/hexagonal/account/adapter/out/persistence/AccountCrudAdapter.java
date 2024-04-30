@@ -32,7 +32,7 @@ class AccountCrudAdapter implements AccountCrudPort {
     }
 
     @Override
-    public Account findByAccountWithTransactions(Long memberId, String number) {
-        return accountRepository.findWithTransactions(memberId, number);
+    public Account findByAccountWithTransactions(Long memberId, String number, String transactionType) {
+        return accountRepository.findWithTransactionsQueryDsl(memberId, number, transactionType);
     }
 }

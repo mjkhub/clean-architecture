@@ -11,6 +11,6 @@ public interface AccountCrudPort {
 
     List<Account> getAccounts(Long memberId);
 
-    Account findByAccountWithTransactions(Long memberId, String number);
+    Account findByAccountWithTransactions(Long memberId, String number, String transactionType);
 
 }

@@ -15,7 +15,7 @@ public enum TransactionType {
     public static TransactionType getTransactionType(String type){
 
         for (TransactionType value : TransactionType.values()) {
-            if(value.type.equals("type"))
+            if(value.type.equals(type))
                 return value;
         }
         throw new IllegalArgumentException("Wrong type name");

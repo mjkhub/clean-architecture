@@ -58,5 +58,13 @@ public class Initializer {
             transactionService.transferMoney(transactionRequest);
         }
 
+        for(int i=0; i<10; i++){
+            TransactionRequest transactionRequest = new TransactionRequest(
+                    "0000-0000-2","0000-0000-0",
+                    1,"transfer");
+
+            transactionService.transferMoney(transactionRequest);
+        }
+
     }
 }

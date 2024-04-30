@@ -12,5 +12,5 @@ public interface AccountCrudUseCase {
 
     List<Account> getAccountsOfMember(Long memberId);
 
-    Account getAccountWithTransactions(Long memberId, String accountNumber);
+    Account getAccountWithTransactions(Long memberId, String accountNumber, String transactionType);
 }
