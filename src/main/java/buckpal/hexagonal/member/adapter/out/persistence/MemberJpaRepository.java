@@ -32,7 +32,7 @@ class MemberJpaRepository {
                 .setParameter("loginId", loginId)
                 .getResultList();
 
-        if(member == null) return Optional.empty();
+        if(member.isEmpty()) return Optional.empty();
         else return Optional.of(member.get(0));
     }
 

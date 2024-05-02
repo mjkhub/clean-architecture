@@ -2,6 +2,7 @@ package buckpal.hexagonal.member.adapter.in.web;
 
 
 import buckpal.hexagonal.SessionManager;
+import buckpal.hexagonal.account.adapter.in.web.AccountCrudControllerAdvice;
 import buckpal.hexagonal.account.domain.Account;
 import buckpal.hexagonal.member.application.port.in.MemberLoginUseCase;
 import buckpal.hexagonal.member.application.service.dto.MemberLoginRequest;
@@ -12,12 +13,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 public class MemberLoginController {
 
@@ -43,9 +49,22 @@ public class MemberLoginController {
     }
 
 
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(NoSuchElementException.class)
+    public ErrorResult illegalExHandle(NoSuchElementException e) {
+        log.error("Login failed", e);
+        return new ErrorResult("type", "wrong loginId or password", 401, e.getMessage(), "instance");
+    }
 
-
-
+    @AllArgsConstructor
+    @Getter
+    static class ErrorResult {
+        private String type;
+        private String title;
+        private int status;
+        private String detail;
+        private String instance;
+    }
 
 
 }
