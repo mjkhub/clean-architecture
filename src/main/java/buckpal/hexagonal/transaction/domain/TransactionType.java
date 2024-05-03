@@ -4,8 +4,6 @@ public enum TransactionType {
 
     TRANSFER("transfer"), DEPOSIT("deposit"),
     WITHDRAWAL("withdrawal");
-
-
     private String type;
 
     TransactionType(String type) {

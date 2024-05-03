@@ -1,6 +1,7 @@
 package buckpal.hexagonal.member.domain;
 
 import buckpal.hexagonal.account.domain.Account;
+import buckpal.hexagonal.lottery.domain.Lottery;
 import buckpal.hexagonal.member.domain.dto.MemberCreateRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -38,8 +39,13 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Account> accounts = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member")
+    private List<Lottery> lotteryList = new ArrayList<>();
+
 
     public static Member createMember(MemberCreateRequest memberCreateRequest){
+        // member 는 시스템 상에서 되게 중요한 엔티티
+        // -> 시스템 상에서 동적 으로 action 을 취함 -> DDD Style 로 코딩
         Member m = new Member();
         m.name = memberCreateRequest.getName();
         m.loginId = memberCreateRequest.getLoginId();

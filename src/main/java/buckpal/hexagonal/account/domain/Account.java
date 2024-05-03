@@ -68,6 +68,7 @@ public class Account {
         return new AccountState(destinationAccount.getNumber(), money, this.getMoney());
     }
 
+
     public boolean isNameCorrect(String name){
         return this.number.equals(name);
     }

@@ -2,6 +2,7 @@ package buckpal.hexagonal;
 
 import buckpal.hexagonal.account.domain.Account;
 import buckpal.hexagonal.account.domain.dto.AccountCreateRequest;
+import buckpal.hexagonal.lottery.domain.LotteryConst;
 import buckpal.hexagonal.member.application.port.in.MemberLoginUseCase;
 import buckpal.hexagonal.member.application.service.dto.MemberLoginRequest;
 import buckpal.hexagonal.member.domain.Member;
@@ -15,6 +16,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import static buckpal.hexagonal.lottery.domain.LotteryConst.*;
+
 @Component
 @RequiredArgsConstructor
 public class Initializer {
@@ -25,6 +28,12 @@ public class Initializer {
     @EventListener(ApplicationReadyEvent.class)
     @Transactional
     public void init(){
+        Member lotteryManager = Member.createMember(new MemberCreateRequest("lotteryManager", "lottery", "1234", "1234"));
+        Account lotteryManagerAccount = Account.createAccount(LOTTERY_MANAGER_ACCOUNT_NUMBER, lotteryManager, new AccountCreateRequest("우리", 0));
+
+        em.persist(lotteryManager);
+        em.persist(lotteryManagerAccount);
+
         Member m1 = Member.createMember(new MemberCreateRequest("jay", "loginId1", "1234", "1234"));
         Member m2 = Member.createMember(new MemberCreateRequest("park", "loginId2", "1234", "1234"));
 
