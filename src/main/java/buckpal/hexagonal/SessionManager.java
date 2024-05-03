@@ -12,12 +12,14 @@ public class SessionManager {
 
     public void createSessionAndRestore(HttpServletRequest servletRequest, Long memberId){
         HttpSession session = servletRequest.getSession(); //세션 생성
+        System.out.println("session = " + session.getClass());
         session.setAttribute("memberId", memberId);
     }
 
     public Long getMemberIdFromSession(HttpServletRequest servletRequest) {
         HttpSession session = servletRequest.getSession(false);
         Long memberId = (Long)session.getAttribute("memberId"); //could occur null pointer exception
+
         return memberId;
     }
 

@@ -24,6 +24,10 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis' // Spring 에서 제공 하는 redis client
+    implementation 'org.springframework.session:spring-session-data-redis' // 스프링 에서 제공 하는 HttpSession 구현체 SpringSession
+                                                                            //사실은 이 두개만 있어도 스프링 부트가 알아서 넣어 줌
     testImplementation 'junit:junit:4.13.1'
 
     compileOnly 'org.projectlombok:lombok'
