@@ -25,7 +25,7 @@ public class Account {
     private Long id;
 
     @Column(unique = true)
-    private String number; // 계좌 번호
+    private String accountNumber; // 계좌 번호
     private String transferPassword; // 송금시 입력할 비밀 번호
     private int money;
     private LocalDate signUpDate;
@@ -42,7 +42,7 @@ public class Account {
 
     public static Account createAccount(String accountNumber, Member member, AccountCreateRequest accountCreateRequest){
         Account account = new Account();
-        account.number = accountNumber;
+        account.accountNumber = accountNumber;
         account.transferPassword = member.getTransferPassword();
         account.money = accountCreateRequest.getMoney();
         account.signUpDate = LocalDate.now();
@@ -65,12 +65,12 @@ public class Account {
         destinationAccount.addMoney(money);
         destinationAccount.getMember().addTotalMoney(money);
 
-        return new AccountState(destinationAccount.getNumber(), money, this.getMoney());
+        return new AccountState(destinationAccount.getAccountNumber(), money, this.getMoney());
     }
 
 
     public boolean isNameCorrect(String name){
-        return this.number.equals(name);
+        return this.accountNumber.equals(name);
     }
     public boolean isPasswordCorrect(String password){
         return this.transferPassword.equals(password);

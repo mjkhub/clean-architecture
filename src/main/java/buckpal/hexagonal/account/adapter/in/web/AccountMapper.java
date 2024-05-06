@@ -3,8 +3,6 @@ package buckpal.hexagonal.account.adapter.in.web;
 
 import buckpal.hexagonal.account.domain.Account;
 import buckpal.hexagonal.transaction.domain.Transaction;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import java.time.format.DateTimeFormatter;
@@ -17,7 +15,7 @@ class AccountMapper {
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
     public AccountCrudController.AccountDtoWithTransactions mapToDto(Account account){
 
-        String number = account.getNumber();
+        String number = account.getAccountNumber();
         int money = account.getMoney();
 
         List<Transaction> transactions = account.getTransactions();

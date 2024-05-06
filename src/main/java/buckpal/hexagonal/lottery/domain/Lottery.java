@@ -15,7 +15,7 @@ public class Lottery {
     @Column(name="lottery_purchase_id")
     private Long id;
 
-    private int lotteryCount;
+    private Long lotteryCount;
 
     private String lotteryNumber;
 
@@ -25,7 +25,7 @@ public class Lottery {
 
     private String depositAccountNumber;
 
-    public Lottery(int lotteryCount, String lotteryNumber, Member member, String depositAccountNumber) {
+    public Lottery(Long lotteryCount, String lotteryNumber, Member member, String depositAccountNumber) {
 
         // Lottery 는 시스템 에서 정적인 엔티티
         // 생성 된후 바뀌질 않음. 거래도 마찬 가지 그래서 이러한 스타일 로 코딩

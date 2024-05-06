@@ -24,7 +24,7 @@ class AccountJpaRepository {
     public Account findByNumber(String accountNumber){
         return em.createQuery("select a from Account a " +
                         "join fetch a.member m " +
-                        "where a.number = :accountNumber ", Account.class)
+                        "where a.accountNumber = :accountNumber ", Account.class)
                 .setParameter("accountNumber", accountNumber)
                 .getSingleResult();
     }
@@ -46,7 +46,7 @@ class AccountJpaRepository {
         List<Account> resultList = em.createQuery("select distinct a from Account a " +
                         "join a.member m " +
                         "join fetch a.transactions tr " +
-                        "where a.number =:accountNumber and m.id =: memberId", Account.class)
+                        "where a.accountNumber =:accountNumber and m.id =: memberId", Account.class)
                 .setParameter("memberId", memberId)
                 .setParameter("accountNumber", accountNumber)
                 .getResultList();
@@ -69,7 +69,7 @@ class AccountJpaRepository {
                 .from(account)
                 .join(account.member, member)
                 .join(account.transactions, transaction).fetchJoin()
-                .where(account.number.eq(accountNumber),
+                .where(account.accountNumber.eq(accountNumber),
                         member.id.eq(memberId),
                         transactionTypeEq(transactionType))
                 .fetch();

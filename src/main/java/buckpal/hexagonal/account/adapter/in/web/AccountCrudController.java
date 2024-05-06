@@ -4,10 +4,8 @@ import buckpal.hexagonal.SessionManager;
 import buckpal.hexagonal.account.application.port.in.AccountCrudUseCase;
 import buckpal.hexagonal.account.domain.Account;
 import buckpal.hexagonal.account.domain.dto.AccountCreateRequest;
-import buckpal.hexagonal.member.adapter.in.web.MemberLoginController;
 import buckpal.hexagonal.member.application.port.in.MemberCrudUseCase;
 import buckpal.hexagonal.member.domain.Member;
-import buckpal.hexagonal.transaction.domain.TransactionType;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,8 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 @Slf4j
@@ -39,7 +35,7 @@ class AccountCrudController {
 
         Account account = accountCrudUseCase.createAccount(member, createAccountRequest);
 
-        return new CreateAccountResponse(member.getName(),account.getNumber(), account.getMoney(),account.getSignUpDate());
+        return new CreateAccountResponse(member.getName(),account.getAccountNumber(), account.getMoney(),account.getSignUpDate());
     }
 
     @GetMapping("/member/accounts")
@@ -50,7 +46,7 @@ class AccountCrudController {
         Member member = memberCrudUseCase.findMemberById(memberId);
 
         List<AccountDto> accountDtoList = member.getAccounts().stream()
-                .map(a -> new AccountDto(a.getNumber(), a.getMoney()))
+                .map(a -> new AccountDto(a.getAccountNumber(), a.getMoney()))
                 .toList();
         return new MemberAccountsResponse(member.getName(), member.getTotalMoney().get(), accountDtoList); // Account 객체를 또 dto 로 변환 해야 함
     }
