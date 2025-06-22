@@ -14,9 +14,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker image
+        run: docker build -t myapp-image .
+
+      - name: Save Docker image to TAR
         run: |
-          docker build -t myapp-image .
-          docker save myapp-image -o myapp.tar
+          mkdir -p tmp-docker
+          docker save myapp-image -o tmp-docker/myapp.tar
 
       - name: Upload Docker image tar to remote server
         uses: appleboy/scp-action@v0.1.7
@@ -24,7 +27,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          source: myapp.tar
+          source: tmp-docker/myapp.tar
           target: ~/app/
 
       - name: Run Docker container on remote server
@@ -34,6 +37,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
+            set -e
             cd ~/app
             docker stop myapp || true
             docker rm myapp || true
