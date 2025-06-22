@@ -13,31 +13,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: 17
+      - name: Build Docker image
+        run: |
+          docker build -t myapp-image .
+          docker save myapp-image -o myapp.tar
 
-      - name: Build JAR
-        run: ./gradlew bootJar
-
-      - name: Upload JAR to remote server
+      - name: Upload Docker image tar to remote server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          source: build/libs/*.jar
+          source: myapp.tar
           target: ~/app/
 
-      - name: Restart app via SSH
+      - name: Run Docker container on remote server
         uses: appleboy/ssh-action@v1.0.3
-        continue-on-error: true
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            pkill -f 'java.*\.jar' || true
-            nohup java -jar ~/app/*.jar > ~/app/log.out 2>&1 < /dev/null & sleep 5 || true
+            cd ~/app
+            docker stop myapp || true
+            docker rm myapp || true
+            docker load -i myapp.tar
+            docker run -d --name myapp -p 8080:8080 myapp-image
