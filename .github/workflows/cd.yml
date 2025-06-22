@@ -33,11 +33,11 @@ jobs:
 
       - name: Restart app via SSH
         uses: appleboy/ssh-action@v1.0.3
-        continue-on-error: true  # SSH 세션이 SIGTERM(143)으로 종료돼도 무시
+        continue-on-error: true
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             pkill -f 'java.*\.jar' || true
-            nohup java -jar ~/app/*.jar > ~/app/log.out 2>&1 & disown || true
+            nohup java -jar ~/app/*.jar > ~/app/log.out 2>&1 < /dev/null & sleep 5 || true
