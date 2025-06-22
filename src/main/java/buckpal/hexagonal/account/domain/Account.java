@@ -1,9 +1,12 @@
 package buckpal.hexagonal.account.domain;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
+import jakarta.persistence.*;
+import lombok.*;
 
 
 @Entity

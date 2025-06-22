@@ -3,6 +3,9 @@ package buckpal.hexagonal.transaction.application.service.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 @Getter
 @AllArgsConstructor
 public class TransactionRequest {
