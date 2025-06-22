@@ -31,6 +31,11 @@ class AccountCrudService implements AccountCrudUseCase {
         return accountCrudPort.saveAccount(account);
     }
 
+    @Override
+    public Account findByAccountId(Long accountId) {
+        return accountCrudPort.findById(accountId);
+    }
+
     private String generateAccountNumber(){ // 계좌 번호는 유니크 -> An error could occur
         return "0000-0000-" + Long.toString(accountNumber.incrementAndGet());
     }

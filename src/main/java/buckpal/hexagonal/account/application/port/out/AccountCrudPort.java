@@ -9,4 +9,5 @@ public interface AccountCrudPort {
 
     Account findByAccountNumber(String accountNumber);
 
+    Account findById(Long accountId);
 }

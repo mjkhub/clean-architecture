@@ -6,5 +6,5 @@ import buckpal.hexagonal.account.domain.Account;
 public interface AccountCrudUseCase {
 
     Account createAccount();
-
+    Account findByAccountId(Long accountId);
 }

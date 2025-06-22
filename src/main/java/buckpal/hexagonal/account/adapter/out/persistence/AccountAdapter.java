@@ -23,4 +23,9 @@ class AccountAdapter implements AccountCrudPort {
     public Account findByAccountNumber(String accountNumber) {
         return accountRepository.findByAccountNumber(accountNumber);
     }
+
+    @Override
+    public Account findById(Long accountId) {
+        return accountRepository.findById(accountId).orElse(null);
+    }
 }
