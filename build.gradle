@@ -10,10 +10,11 @@ spotless {
         importOrder(
                 'java',
                 'javax',
-                '',
-                'io.swagger',
+                'org',
                 'org.springframework',
-                '',
+                'com',
+                'io',
+                'net',
                 'buckpal'
         )
         removeUnusedImports()

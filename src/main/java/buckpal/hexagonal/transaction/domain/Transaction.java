@@ -2,13 +2,10 @@ package buckpal.hexagonal.transaction.domain;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.*;
-import lombok.*;
-
-import jakarta.persistence.*;
-import lombok.*;
-
 import buckpal.hexagonal.account.domain.Account;
+
+import jakarta.persistence.*;
+import lombok.*;
 
 
 @Getter
